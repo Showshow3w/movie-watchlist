@@ -1,0 +1,16 @@
+/* Applied to the <li> when a movie is marked watched */
+.watched {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* Applied to whichever filter button is currently active */
+.active-filter {
+  background-color: #1a1a2e;
+  color: white;
+}
+
+/* Applied to cards that don't match the current filter — hides them */
+.filtered-out {
+  display: none;
+}
