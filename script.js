@@ -7,6 +7,8 @@ const movieList = document.getElementById("movie-list")
 const clearWatchedBtn = document.getElementById("clear-watched-btn")
 const filterBtns = document.querySelectorAll(".filter-btn")
 
+let currentFilter = "all"
+
 console.log(appTitle)
 console.log(movieCount)
 console.log(movieForm)
@@ -139,7 +141,8 @@ movieList.addEventListener("click", (event) => {
   // 3. Was it the Remove button?
   if (event.target.classList.contains("remove-btn")) {
     card.remove()
-    updateCount()   
+    updateCount()
+    applyFilter(currentFilter)   
     // TODO: call updateCount() here — Phase 6
     // TODO: call applyFilter(currentFilter) here — Phase 6
   }
@@ -154,6 +157,7 @@ movieList.addEventListener("click", (event) => {
     } else {
       event.target.textContent = "Mark Watched"
     }
+    applyFilter(currentFilter)
     // TODO: call applyFilter(currentFilter) here — Phase 6
   }
 })
@@ -170,3 +174,65 @@ function updateCount() {
     movieCount.textContent = total + " movies"
   }
 }
+// --- Phase 6B: Filter Functions ---
+
+function updateFilterButtons(activeFilter) {
+  filterBtns.forEach((btn) => {
+    btn.classList.remove("active-filter")
+    if (btn.id === "filter-" + activeFilter) {
+      btn.classList.add("active-filter")
+    }
+  })
+}
+
+function applyFilter(filter) {
+  // 1. Update the currentFilter variable
+  currentFilter = filter
+
+  // 2. Update which button looks active
+  updateFilterButtons(filter)
+
+  // 3. Get all cards
+  const cards = movieList.querySelectorAll(".movie-card")
+
+  // 4. Show or hide each card based on filter
+  cards.forEach((card) => {
+    if (filter === "all") {
+      card.classList.remove("filtered-out")
+    } else if (filter === "watched") {
+      if (card.classList.contains("watched")) {
+        card.classList.remove("filtered-out")
+      } else {
+        card.classList.add("filtered-out")
+      }
+    } else if (filter === "unwatched") {
+      if (!card.classList.contains("watched")) {
+        card.classList.remove("filtered-out")
+      } else {
+        card.classList.add("filtered-out")
+      }
+    }
+  })
+}
+
+// Wire up filter buttons
+filterBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const filter = btn.id.replace("filter-", "")
+    applyFilter(filter)
+  })
+})
+// --- Phase 6C: Clear Watched ---
+clearWatchedBtn.addEventListener("click", () => {
+  // 1. Select all watched cards
+  const watchedCards = movieList.querySelectorAll(".watched")
+
+  // 2. Remove each one
+  watchedCards.forEach((card) => card.remove())
+
+  // 3. Update the count
+  updateCount()
+
+  // 4. Reapply the current filter
+  applyFilter(currentFilter)
+})
