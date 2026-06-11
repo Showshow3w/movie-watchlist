@@ -117,3 +117,41 @@ movieForm.addEventListener("submit", (event) => {
 
   // 6. Don't build cards yet — that's Phase 4
 })
+
+// --- Phase 5: Button Behavior (Event Delegation) ---
+
+// Why do we attach the listener to #movie-list instead of to each button?
+// Answer: Buttons are created dynamically — they don't exist when the page loads.
+//         Attaching to the list means ALL future buttons are covered automatically.
+//
+// What does event.target.closest("li") do?
+// Answer: Walks UP the DOM tree from the clicked button until it finds
+//         the nearest <li> — giving us the whole card element.
+
+movieList.addEventListener("click", (event) => {
+  // 1. If the click was not on a button, ignore it
+  if (event.target.tagName !== "BUTTON") return
+
+  // 2. Get the whole card the button lives in
+  const card = event.target.closest("li")
+
+  // 3. Was it the Remove button?
+  if (event.target.classList.contains("remove-btn")) {
+    card.remove()
+    // TODO: call updateCount() here — Phase 6
+    // TODO: call applyFilter(currentFilter) here — Phase 6
+  }
+
+  // 4. Was it the Watch button?
+  if (event.target.classList.contains("watch-btn")) {
+    card.classList.toggle("watched")
+
+    // Update button text based on new state
+    if (card.classList.contains("watched")) {
+      event.target.textContent = "Unmark Watched"
+    } else {
+      event.target.textContent = "Mark Watched"
+    }
+    // TODO: call applyFilter(currentFilter) here — Phase 6
+  }
+})
