@@ -111,6 +111,7 @@ movieForm.addEventListener("submit", (event) => {
   // 4. Log both values to the console
   //    Type a title and genre, submit — confirm you see them in DevTools
   movieList.appendChild(card)
+  updateCount()  
   // 5. At the end, reset the form so the inputs are blank for the next entry
   movieForm.reset()
   //    .reset() clears all inputs in the form at once — no need to blank them one by one
@@ -138,6 +139,7 @@ movieList.addEventListener("click", (event) => {
   // 3. Was it the Remove button?
   if (event.target.classList.contains("remove-btn")) {
     card.remove()
+    updateCount()   
     // TODO: call updateCount() here — Phase 6
     // TODO: call applyFilter(currentFilter) here — Phase 6
   }
@@ -155,3 +157,16 @@ movieList.addEventListener("click", (event) => {
     // TODO: call applyFilter(currentFilter) here — Phase 6
   }
 })
+// --- Phase 6A: Keep the Count Accurate ---
+
+function updateCount() {
+  // 1. Count all cards currently in the list
+  const total = movieList.querySelectorAll(".movie-card").length
+
+  // 2. Update the header — handle singular vs plural
+  if (total === 1) {
+    movieCount.textContent = "1 movie"
+  } else {
+    movieCount.textContent = total + " movies"
+  }
+}
