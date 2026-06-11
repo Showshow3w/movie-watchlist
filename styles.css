@@ -14,3 +14,13 @@
 .filtered-out {
   display: none;
 }
+.movie-title {
+  display: block;
+  font-weight: bold;
+}
+
+.movie-genre {
+  display: block;
+  font-size: 0.85rem;
+  color: gray;
+}

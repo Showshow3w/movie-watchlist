@@ -52,7 +52,51 @@ titleInput.setAttribute("required", "")  // put it back
 // What is the difference between getAttribute("value") and .value on an input?
 // getAttribute("value") → Checking HTML attributes like type, placeholder, required
 // .value               → Getting the current value of the input field
+// --- Phase 4: Build a Card ---
+function createMovieCard(title, genre) {
+  // 1. Create the outer <li>
+  const li = document.createElement("li")
+  li.classList.add("movie-card")
+  li.setAttribute("data-genre", genre)
 
+  // 2. Create the info div with two spans
+  const infoDiv = document.createElement("div")
+  infoDiv.classList.add("movie-info")
+
+  const titleSpan = document.createElement("span")
+  titleSpan.classList.add("movie-title")
+  titleSpan.textContent = title
+
+  const genreSpan = document.createElement("span")
+  genreSpan.classList.add("movie-genre")
+  genreSpan.textContent = genre || "No genre"
+
+  infoDiv.appendChild(titleSpan)
+  infoDiv.appendChild(genreSpan)
+
+  // 3. Create the actions div with two buttons
+  const actionsDiv = document.createElement("div")
+  actionsDiv.classList.add("movie-actions")
+
+  const watchBtn = document.createElement("button")
+  watchBtn.classList.add("watch-btn")
+  watchBtn.textContent = "Mark Watched"
+
+  const removeBtn = document.createElement("button")
+  removeBtn.classList.add("remove-btn")
+  removeBtn.textContent = "Remove"
+
+  actionsDiv.appendChild(watchBtn)
+  actionsDiv.appendChild(removeBtn)
+
+  // 4. Append both divs into the <li>
+  li.appendChild(infoDiv)
+  li.appendChild(actionsDiv)
+
+  // 5. Return the card — NOT appending here, that's the caller's job
+  return li
+}
+//phase 3 
 movieForm.addEventListener("submit", (event) => {
   // 1. Stop the browser from reloading the page
   //    Without this line, the page refreshes on every submit and you lose everything
@@ -63,11 +107,10 @@ movieForm.addEventListener("submit", (event) => {
 
   // 3. Read the genre the same way
   const genre = genreInput.value
-
+  const card = createMovieCard(title, genre)
   // 4. Log both values to the console
   //    Type a title and genre, submit — confirm you see them in DevTools
-  console.log("Title:", title)
-  console.log("Genre:", genre)
+  movieList.appendChild(card)
   // 5. At the end, reset the form so the inputs are blank for the next entry
   movieForm.reset()
   //    .reset() clears all inputs in the form at once — no need to blank them one by one
